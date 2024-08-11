@@ -33,10 +33,32 @@ public:
             tempHead=tempHead->next;
         }
         return head;
-        //hello
     }
 
-    
+    // TC ---> O(n)
+    // SC ---> O(n)
+    ListNode* removeDuplicates1(ListNode* head){
+        if(!head)return NULL;
+        map<int,bool> mp;
+        mp[head->val]=true;
+        ListNode* prev=head;
+        ListNode* forw=NULL;
+        ListNode* curr=head->next;
+        while(curr){
+            forw=curr->next;
+            if(!mp[curr->val])mp[curr->val]=true;
+            else if(mp[curr->val]){
+                auto toDelete=curr;
+                prev->next=forw;
+                curr=forw;
+                delete toDelete;
+                continue;
+            }
+            prev=prev->next;
+            curr=curr->next;
+        }
+        return head;
+    }
 };
 
 
@@ -44,11 +66,11 @@ int main()
 {
     ListNode* head=new ListNode(2);
     head->next=new ListNode(1);
-    head->next->next=new ListNode(2);
-    head->next->next->next=new ListNode(3);
+    head->next->next=new ListNode(5);
+    head->next->next->next=new ListNode(1);
     head->next->next->next->next=new ListNode(1);
-    head->next->next->next->next->next=new ListNode(9);
-    head->next->next->next->next->next->next=new ListNode(0);
+    head->next->next->next->next->next=new ListNode(0);
+    head->next->next->next->next->next->next=new ListNode(1);
     auto res=head;
     while(res!=NULL){
         cout<<res->val<<" ";
@@ -56,7 +78,7 @@ int main()
     }
 
     Solution s;
-    ListNode* result=s.removeDuplicates(head);
+    ListNode* result=s.removeDuplicates1(head);
     while(result!=NULL){
         cout<<result->val<<" ";
         result=result->next;
