@@ -57,23 +57,54 @@ void heapify(vector <int> &arr,int n,int i){
     }
 }
 
+void heapifyS(vector<int> &arr,int size,int i){
+    int largest=i;
+    int left=2*i;
+    int right=2*i+1;
+
+    if(left<size && arr[largest]<arr[left]){largest=left;}
+    if(right<size && arr[largest]<arr[right]){largest=right;}
+
+    if(largest!=i){
+        swap(arr[i],arr[largest]);
+        heapifyS(arr,size,largest);
+    }
+}
+
+void heapSort(vector<int>&arr,int size){
+    int i=1;
+    size--;
+    while(size>0){
+        swap(arr[1],arr[size]);
+        heapifyS(arr,size,1);
+        cout<<"hello";
+        size--;
+    }
+}
+
+
 int main()
 {
-    heap h;
-    h.insert(20);
-    h.insert(10);
-    h.insert(50);
-    h.insert(30);
-    h.insert(40);
-    h.print();
+    // heap h;
+    // h.insert(20);
+    // h.insert(10);
+    // h.insert(50);
+    // h.insert(30);
+    // h.insert(40);
+    // h.print();
 
-    h.deleteRoot();
-    h.print();
+    // h.deleteRoot();
+    // h.print();
 
-    vector<int> arr={-1,10,20,30,40,50,80};
+    vector<int> arr={-1,40,10,90,-35,14,43,24,20,40};
+    // vector<int> arr={-1,10,20,30,40,50,80};
     for (int i=(arr.size())/2-1;i>0;i--)heapify(arr,arr.size(),i);
     for (int i=1;i<arr.size();i++)cout<<arr[i]<<" ";
     cout<<endl;
+
+    cout<<"heap sort"<<endl;
+    heapSort(arr,arr.size());
+    for(auto num:arr)cout<<num<<" ";
 
     return 0;
 }
