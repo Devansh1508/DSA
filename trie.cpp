@@ -57,14 +57,33 @@ class Trie{
     bool searchWord(string word){
         return searchUtil(root,word);
     }
+
+    void deleteUtil(TrieNode*root,string word){
+        if(word.length()==0 && root->isTerminal){root->isTerminal=false; return;}
+        else if (word.length()==0 && !root->isTerminal){return;}
+        // considering word is present in the trie 
+        int index=word[0]-'A';
+        TrieNode*child;
+        child=root->children[index];
+        deleteUtil(child,word.substr(1));
+    }
+
+    void deleteWord(string Word){
+        deleteUtil(root,Word);
+    }
 };
 
 int main()
 {
     Trie *t=new Trie();
     t->insertWord("HELLO");
+    t->insertWord("TIME");
+    t->insertWord("TIMY");
 
-    cout<<"is it present "<<t->searchWord("HELLOQ")<<endl;
+    cout<<"is it present "<<t->searchWord("HELLO")<<endl;
+    cout<<"is it present "<<t->searchWord("TIM")<<endl;
+    t->deleteWord("HELLO");
+    cout<<"is it present "<<t->searchWord("HELLO")<<endl;
     
     return 0;
 }
