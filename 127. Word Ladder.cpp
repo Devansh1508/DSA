@@ -13,6 +13,7 @@ class Solution {
                 auto front=q.front(); q.pop();
                 string str=front.first;
                 int step=front.second;
+                int i=0;
 
                 for(int i=0;i<str.size();i++){
                     string s1=str;
