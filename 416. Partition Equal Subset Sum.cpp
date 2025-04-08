@@ -13,9 +13,28 @@ class Solution {
             return (include || exclude)?true:false;
         }
 
+        bool solveItr(vector<int>& nums,int target){
+            vector<bool>dp(target+1);
+
+            for(auto num:nums){
+                if(num<=target){
+                    dp[num]=true;
+                }
+            }
+            dp[0]=true;
+
+            for(auto num:nums){
+                for(int i=target;i>=num;i--){
+                    dp[i]=dp[i]||dp[i-num];
+                }
+            }
+
+            return dp[target];
+        }
+
         bool canPartition(vector<int>& nums) {
             int sum=accumulate(nums.begin(),nums.end(),0);
             if(sum%2==1)return false;
-            return solve(nums,sum/2,0);
+            return solveItr(nums,sum/2);
         }
     };
