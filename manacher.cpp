@@ -37,7 +37,7 @@ string longestPalindrome(string s) {
         // palindrome may contain only one value involving the center character
         if (i + P[i] > R) {
             C = i;
-            R = i + P[i];
+            R = i + P[i]; // center to right border
         }
     }
 
@@ -55,6 +55,7 @@ string longestPalindrome(string s) {
     
     // Step 4: Extract result
     int start = (centerIndex - maxLen) / 2; // map back to original string
+    // the original string has half length of this new one 
     return s.substr(start, maxLen);
 }
 
