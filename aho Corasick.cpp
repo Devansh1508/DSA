@@ -12,6 +12,7 @@ private:
         Node() { next.fill(-1); }
     };
 
+    // it is used for maintaining the trie structure
     vector<Node> trie;
 
 public:
@@ -24,6 +25,8 @@ public:
             int ch = c - 'a';
             if (trie[v].next[ch] == -1) {
                 trie[v].next[ch] = trie.size();
+                // pushing back the new node 
+                // similar to push_back(Node())
                 trie.emplace_back();
             }
             v = trie[v].next[ch];
@@ -50,12 +53,26 @@ public:
                 // u==-1 ---> no child for character ch
                 if (u == -1) {
                     // if current was root then it means no node to fallback so point it to root
+                    // 0 ---> means the root 
                     // if v!=0 --> Follow the failure link of v(parent node)
                     // which means if I can’t go here, jump to the longest suffix that could continue with this character
                     trie[v].next[ch] = (v == 0 ? 0 : trie[trie[v].link].next[ch]);
+                    // trie[trie[v].link].next[ch] ---> means that we are moving to the failure link of v because suffix will surely matched with the pattern so now we are checking for the next character
                 } else {
                     // connecting the child with a link 
+                    // if parent is root then child link will also point to root
+//                     Suppose we just built edge v --ch--> u.
+
+                    // If the search fails at u (mismatch later), we want to know:
+                    // “What’s the next longest suffix we can still match if we see ch?”
+
+                    // Where do we find that?
+                    // 👉 By taking the failure link of v (i.e., best suffix before ch), and asking:
+                    // “From there, if I see ch, where would I go?”
+
+                    // That’s exactly trie[trie[v].link].next[ch].
                     trie[u].link = (v == 0 ? 0 : trie[trie[v].link].next[ch]);
+                    // now if the next[ch] do not exist for trie[v].link then it will point to root because of the above condition in if part 
                     for (int id : trie[trie[u].link].out)
                         trie[u].out.push_back(id); // merge outputs
                     q.push(u);
